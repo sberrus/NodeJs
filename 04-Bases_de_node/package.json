@@ -1,0 +1,16 @@
+{
+  "name": "04-bases_de_node",
+  "version": "1.0.0",
+  "description": "Sección 4 Curso de NodeJS - Bases de Node",
+  "main": "app.js",
+  "scripts": {
+    "yargs": "node helpers/yargs.js --base=1 -b --booleano",
+    "yargs-help": "node helpers/yargs.js --help"
+  },
+  "author": "Samuel Berrus",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "yargs": "^17.1.1"
+  }
+}
