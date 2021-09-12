@@ -1,4 +1,4 @@
-# Sección 5. Creación de aplicación interactiva en la consola de desarrollo hecha en Node.
+# Sección 5. Creación de aplicación interactiva en la consola de desarrollo.
 
 ## ¿Qué se verá en esta sección?
 
