@@ -1,20 +1,8 @@
 //Estilizar mensajes en consola
 require("colors");
-/**
- *
- * @param msg Header del menú de la consola
- * @returns String con el header decorado para consola
- */
-const consoleHeader = (msg) => {
-    const decorLength = msg.length;
-    let decorString = "====";
 
-    for (let i = 0; i < decorLength; i++) {
-        decorString += "=";
-    }
-
-    return `${decorString}\n  ${msg}  \n${decorString}`;
-};
+//importaciones
+const { consoleHeader } = require("./decors");
 
 const mostrarMenu = () => {
     //* Devolvemos una promesa para poder usar la respuesta en el main.
