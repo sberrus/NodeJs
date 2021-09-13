@@ -4,11 +4,17 @@ require("colors");
 //importaciones
 const { inquirerMenu, pausa, leerInput } = require("./helpers/inquirer");
 const Tareas = require("./models/tareas");
+const { guardarDB, leerDB } = require("./helpers/guardarArchivo");
 
 //* Creamos una función main() para poder trabajar de manera asincrona en nuestra aplicación.
 const main = async () => {
     let opt = "";
     const tareas = new Tareas();
+
+    const tareasdb = leerDB();
+    if (tareasdb) {
+        tareas._listado = tareasdb;
+    }
 
     do {
         //Menú principal
@@ -28,6 +34,8 @@ const main = async () => {
             default:
                 break;
         }
+
+        guardarDB(tareas.listadoArr);
 
         await pausa();
     } while (opt !== "0");
