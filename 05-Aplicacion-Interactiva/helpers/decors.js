@@ -1,3 +1,4 @@
+require("colors");
 /**
  *
  * @param {*} msg Mensaje a decorar
@@ -11,7 +12,7 @@ const consoleHeader = (msg) => {
         decorString += "=";
     }
 
-    return `${decorString}\n  ${msg}  \n${decorString}`;
+    return `${decorString.green}\n  ${msg.bold}  \n${decorString.green}`;
 };
 
 module.exports = { consoleHeader };

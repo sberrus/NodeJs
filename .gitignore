@@ -1,1 +1,5 @@
+#Carpetas de los módulos de las secciones
 node_modules
+
+#Archivos .txt de Sección 4
+/04-Bases_de_node/tablas/*.txt

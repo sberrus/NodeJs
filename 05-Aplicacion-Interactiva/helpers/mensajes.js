@@ -27,7 +27,7 @@ const mostrarMenu = () => {
 
         readline.question("Seleccione una opción: ", (opt) => {
             readline.close();
-            //desc: En este punto devolvemos la resolución de lo que nos devuelve el cliente mediante la consola para usarlo dentro del ciclo do...while
+            //desc: En este punto devolvemos la resolución de lo que nos devuelve el usuario mediante la consola para usarlo dentro del ciclo do...while
             resolve(opt);
         });
     });
