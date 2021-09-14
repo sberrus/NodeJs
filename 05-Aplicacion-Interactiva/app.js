@@ -11,9 +11,10 @@ const main = async () => {
     let opt = "";
     const tareas = new Tareas();
 
+    //Leemos la BBDD y usamos los datos para mantener la concurrencia de los mismos.
     const tareasdb = leerDB();
     if (tareasdb) {
-        tareas._listado = tareasdb;
+        tareas.cargarTareasFromArray(tareasdb);
     }
 
     do {

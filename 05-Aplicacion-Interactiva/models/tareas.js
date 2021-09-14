@@ -18,6 +18,10 @@ class Tareas {
         this._listado = {};
     }
 
+    cargarTareasFromArray = (tareas = []) => {
+        this._listado = tareas;
+    };
+
     crearTarea(desc = "") {
         const tarea = new Tarea(desc);
         this._listado[tarea.id] = tarea;
