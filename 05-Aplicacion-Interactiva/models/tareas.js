@@ -1,3 +1,4 @@
+require("colors");
 const Tarea = require("./tarea");
 
 class Tareas {
@@ -12,6 +13,17 @@ class Tareas {
         });
 
         return listado;
+    }
+
+    get listadoCompleto() {
+        let listadoCompleto = "\n";
+        this._listado.forEach((tarea, index) => {
+            let _index = (index + 1).toString() + ".";
+            listadoCompleto += tarea.completadoEn
+                ? `${_index.green} ${tarea.desc} :: ${"Completado".brightGreen.bold}\n`
+                : `${_index.green} ${tarea.desc} :: ${"Pendiente".brightYellow}\n`;
+        });
+        return listadoCompleto;
     }
 
     constructor() {

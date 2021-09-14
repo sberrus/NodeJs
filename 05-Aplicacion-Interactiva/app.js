@@ -28,10 +28,12 @@ const main = async () => {
                 tareas.crearTarea(desc);
                 break;
             case "2":
-                //Listar Opciones
-                console.log(tareas.listadoArr);
+                //Listado Completo
+                console.log(tareas.listadoCompleto);
                 break;
-
+            case "3":
+                //listar completo
+                break;
             default:
                 break;
         }
