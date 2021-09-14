@@ -32,7 +32,12 @@ const main = async () => {
                 console.log(tareas.listadoCompleto);
                 break;
             case "3":
-                //listar completo
+                //listar tareas completas
+                console.log(tareas.listarPendientesCompletadas(true));
+                break;
+            case "4":
+                //listar tareas pendientes
+                console.log(tareas.listarPendientesCompletadas(false));
                 break;
             default:
                 break;
