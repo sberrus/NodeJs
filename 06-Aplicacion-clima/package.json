@@ -1,0 +1,15 @@
+{
+    "name": "06-aplicacion-clima",
+    "version": "1.0.0",
+    "description": "Aplicación de clima con geolocalización Curso NodeJS",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "Samuel Berrus (SamDev)",
+    "license": "ISC",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "inquirer": "^8.1.5"
+    }
+}
