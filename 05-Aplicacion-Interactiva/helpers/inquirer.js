@@ -88,8 +88,30 @@ const listadoTareasBorrar = async (tareas = []) => {
     const { id } = await inquirer.prompt(preguntas);
     return id;
 };
+const mostrarListadoCheckList = async (tareas = []) => {
+    console.clear();
+    const choices = tareas.map((tarea, index) => {
+        const idx = `${index + 1}.`.green.bold;
+        return {
+            value: tarea.id,
+            name: `${idx} ${tarea.desc}`,
+            checked: tarea.completadoEn ? true : false,
+        };
+    });
+
+    const pregunta = [
+        {
+            type: "checkbox",
+            name: "ids",
+            message: `Seleccione las tareas a ${"completar".green.bold}`,
+            choices,
+        },
+    ];
+    const { ids } = await inquirer.prompt(pregunta);
+    return ids;
+};
 const confirmar = async (message) => {
-    console.clear()
+    console.clear();
     const pregunta = [
         {
             type: "confirm",
@@ -101,4 +123,4 @@ const confirmar = async (message) => {
     return ok;
 };
 
-module.exports = { inquirerMenu, pausa, leerInput, listadoTareasBorrar, confirmar };
+module.exports = { inquirerMenu, pausa, leerInput, listadoTareasBorrar, confirmar, mostrarListadoCheckList };
