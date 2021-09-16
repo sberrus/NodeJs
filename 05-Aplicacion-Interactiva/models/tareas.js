@@ -17,7 +17,7 @@ class Tareas {
 
     get listadoCompleto() {
         let listadoCompleto = "\n";
-        this._listado.forEach((tarea, index) => {
+        this.listadoArr.forEach((tarea, index) => {
             let _index = (index + 1).toString() + ".";
             listadoCompleto += tarea.completadoEn
                 ? `${_index.green} ${tarea.desc} :: ${"Completado".brightGreen.bold}\n`
@@ -31,7 +31,9 @@ class Tareas {
     }
 
     cargarTareasFromArray = (tareas = []) => {
-        this._listado = tareas;
+        tareas.forEach((tarea) => {
+            this._listado[tarea.id] = tarea;
+        });
     };
 
     crearTarea(desc = "") {
@@ -60,6 +62,13 @@ class Tareas {
         }
         return lista;
     };
+    borrarTarea(id = "") {
+        if (this._listado[id]) {
+            delete this._listado[id];
+            console.log()
+            console.log("Tarea Eliminada Correctamente".green);
+        }
+    }
 }
 
 module.exports = Tareas;

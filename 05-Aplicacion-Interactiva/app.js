@@ -2,7 +2,7 @@
 require("colors");
 
 //importaciones
-const { inquirerMenu, pausa, leerInput } = require("./helpers/inquirer");
+const { inquirerMenu, pausa, leerInput, listadoTareasBorrar, confirmar } = require("./helpers/inquirer");
 const Tareas = require("./models/tareas");
 const { guardarDB, leerDB } = require("./helpers/guardarArchivo");
 
@@ -32,12 +32,26 @@ const main = async () => {
                 console.log(tareas.listadoCompleto);
                 break;
             case "3":
-                //listar tareas completas
+                //Listar tareas completas
                 console.log(tareas.listarPendientesCompletadas(true));
                 break;
             case "4":
-                //listar tareas pendientes
+                //Listar tareas pendientes
                 console.log(tareas.listarPendientesCompletadas(false));
+                break;
+            case "6":
+                //Listar tareas pendientes
+                //Se usa el await para prevenir que el menú se solape con el menú principal
+                if (tareas.listadoArr.length > 0) {
+                    const id = await listadoTareasBorrar(tareas.listadoArr);
+                    const ok = await confirmar(`¿Seguro que deseas eliminar la tarea?`.yellow.bold);
+                    if (ok) {
+                        tareas.borrarTarea(id);
+                    }
+                } else {
+                    console.log("No hay elementos para eliminar");
+                }
+
                 break;
             default:
                 break;
