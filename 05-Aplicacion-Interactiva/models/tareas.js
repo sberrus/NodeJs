@@ -43,30 +43,35 @@ class Tareas {
     listarPendientesCompletadas = (completadas = true) => {
         let lista = "\n";
         let index = 0;
-        if (completadas) {
-            this._listado.forEach((tarea) => {
-                const { completadoEn, desc } = tarea;
-                if (completadoEn) {
-                    index += 1;
-                    lista += `${(index + ".").green} ${desc} :: ${completadoEn.green}`;
-                }
-            });
+
+        if (this.listadoArr.length > 0) {
+            if (completadas) {
+                this.listadoArr.forEach((tarea) => {
+                    const { completadoEn, desc } = tarea;
+                    if (completadoEn) {
+                        index += 1;
+                        lista += `${(index + ".").green} ${desc} :: ${completadoEn.green}`;
+                    }
+                });
+            } else {
+                this.listadoArr.forEach((tarea) => {
+                    const { completadoEn, desc } = tarea;
+                    if (!completadoEn) {
+                        index += 1;
+                        lista += `\n${(index + ".").yellow} ${desc} :: ${"Pendiente".yellow}`;
+                    }
+                });
+            }
         } else {
-            this._listado.forEach((tarea) => {
-                const { completadoEn, desc } = tarea;
-                if (!completadoEn) {
-                    index += 1;
-                    lista += `\n${(index + ".").yellow} ${desc} :: ${"Pendiente".yellow}`;
-                }
-            });
+            console.log("No hay elementos para listar");
         }
         return lista;
     };
     borrarTarea(id = "") {
         if (this._listado[id]) {
             delete this._listado[id];
-            console.log()
-            console.log("Tarea Eliminada Correctamente".green);
+            console.log();
+            console.log(`Tarea ${"Eliminada".red.bold} Correctamente`);
         }
     }
 }

@@ -26,18 +26,22 @@ const main = async () => {
                 //Crear Opcion
                 const desc = await leerInput("Descripción: ");
                 tareas.crearTarea(desc);
+                await pausa();
                 break;
             case "2":
                 //Listado Completo
                 console.log(tareas.listadoCompleto);
+                await pausa();
                 break;
             case "3":
                 //Listar tareas completas
                 console.log(tareas.listarPendientesCompletadas(true));
+                await pausa();
                 break;
             case "4":
                 //Listar tareas pendientes
                 console.log(tareas.listarPendientesCompletadas(false));
+                await pausa();
                 break;
             case "6":
                 //Listar tareas pendientes
@@ -52,14 +56,14 @@ const main = async () => {
                     console.log("No hay elementos para eliminar");
                 }
 
+                await pausa();
                 break;
             default:
                 break;
         }
 
         guardarDB(tareas.listadoArr);
-
-        await pausa();
+        console.clear();
     } while (opt !== "0");
 };
 
