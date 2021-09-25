@@ -15,6 +15,7 @@ const menuPrincipal = async () => {
             choices: [
                 { value: "1", name: `${"1.".green.bold} Buscar ciudades` },
                 { value: "2", name: `${"2.".green.bold} Historal de busqueda` },
+                { value: "3", name: `${"3.".green.bold} TEST` },
                 { value: "0", name: `${"0.".red.bold} Salir` },
             ],
         },
@@ -50,26 +51,41 @@ const leerInput = async (message) => {
     return ciudad;
 };
 
-const listadoTareasBorrar = async (tareas = []) => {
-    console.clear();
-    const choices = tareas.map((tarea, index) => {
+const listarLugares = async (lugares = []) => {
+    const choices = lugares.map((lugar, index) => {
         const idx = `${index + 1}.`.green.bold;
         return {
-            value: tarea.id,
-            name: `${idx} ${tarea.desc}`,
+            value: lugar.id,
+            name: `${idx} ${lugar.nombre}`,
         };
+    });
+
+    choices.push({
+        value: "0",
+        name: "0.".red + " Cancelar",
     });
 
     const preguntas = [
         {
             type: "list",
             name: "id",
-            message: `Selecciona la tarea a ${"Borrar".red.bold}`,
+            message: `Seleccione lugar:`,
             choices,
         },
     ];
     const { id } = await inquirer.prompt(preguntas);
     return id;
+};
+
+const pausa = async () => {
+    console.log("\n");
+    await inquirer.prompt([
+        {
+            type: "input",
+            name: "pausa",
+            message: `Presiona ${"ENTER".brightGreen} para continuar`,
+        },
+    ]);
 };
 const mostrarListadoCheckList = async (tareas = []) => {
     console.clear();
@@ -105,14 +121,4 @@ const confirmar = async (message) => {
     const { ok } = await inquirer.prompt(pregunta);
     return ok;
 };
-const pausa = async () => {
-    console.log("\n");
-    await inquirer.prompt([
-        {
-            type: "input",
-            name: "pausa",
-            message: `Presiona ${"ENTER".brightGreen} para continuar`,
-        },
-    ]);
-};
-module.exports = { menuPrincipal, pausa, leerInput, listadoTareasBorrar, confirmar, mostrarListadoCheckList };
+module.exports = { menuPrincipal, pausa, leerInput, listarLugares };

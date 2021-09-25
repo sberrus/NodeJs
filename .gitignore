@@ -6,3 +6,5 @@ node_modules
 
 #variables de entorno  
 .env
+
+.rest
