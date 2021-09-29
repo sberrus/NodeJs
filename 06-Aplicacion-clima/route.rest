@@ -1,5 +1,0 @@
-GET https://api.mapbox.com/geocoding/v5/mapbox.places/madrid.json?access_token=pk.eyJ1Ijoic2JlcnJ1cyIsImEiOiJja3R1Ymc4eDQwZ3c3Mm9xdGtiMzVsajNkIn0.whfvjveZK2N0MVYeEBMWFw
-
-###
-
-GET api.openweathermap.org/data/2.5/weather?lat=40.41889&lon=-3.69194&appid=5e583411cdc486a5b1dc30bb3ba73d5f
