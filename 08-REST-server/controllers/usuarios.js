@@ -17,6 +17,7 @@ const putUsers = (req = request, res) => {
     const id = req.params.id;
 
     //desc: Los parametros de consulta (query params) se envian directamente desde el cliente y no hay que configurar nada en las rutas. Esto lo podemos capturar dentro de la propiedad "query" de la request. Devuelve un objeto con los pares clave-valor enviados desde el cliente.
+    
     const query = req.query;
 
     res.json({ msg: "PUT - desde controller", id: "el id es: " + id, query });
