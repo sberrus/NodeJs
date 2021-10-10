@@ -1,0 +1,5 @@
+-   npm init: Inicializar nuevo proyecto.
+-   npm install/i nombre_paquete: Instalar paquete de npm. (Aparece reflejado en la lista de dependencias)
+-           --save-dev: Bandera para indicar que la instalación del paquete solo será utilizada en el ambiente de desarrollo. (Aparece reflejada en la lista de dependencias de desarrollo)
+-   npm uninstall nombre_paquete: Desinstalar paquete de npm
+-   npm update: Actualiza todas las dependencias. (Usar con cuidado, preferiblemente utilizarlo para actualizar dependencias individualmente para evitar conflictos en las dependencias)

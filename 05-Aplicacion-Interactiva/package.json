@@ -1,0 +1,14 @@
+{
+  "name": "05-aplicacion-interactiva",
+  "version": "1.0.0",
+  "description": "Aplicacion interactiva",
+  "main": "app.js",
+  "scripts": {},
+  "author": "Samuel Berrus",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "inquirer": "^8.1.2",
+    "uuid": "^8.3.2"
+  }
+}
