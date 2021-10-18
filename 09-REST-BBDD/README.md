@@ -5,8 +5,8 @@
 
 - Definir los alcances de nuestro RESTServer
 - CRUD
-- Encriptación de contraseñas
-- Validaciones personalizadas
+- Encriptación de contraseñas (bcryptjs)
+- Validaciones personalizadas (express-validator)
 - Creación de roles
 - Conexiones con MLAB
 - Despliegue de base de datos en la nube

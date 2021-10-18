@@ -3,12 +3,19 @@ const bcryptjs = require("bcryptjs");
 
 //p*:Los modelos se inicializan con mayusculas para dejar más claro que es un objeto al que podemos instanciar.
 const Usuario = require("../models/usuario");
+const { validationResult } = require("express-validator");
 
 const getUsers = (req, res = response) => {
 	res.status(200).json({ msg: "GET - desde controller" });
 };
 
 const postUsers = async (req = request, res) => {
+	//El express-validator verifica los campos que deseamos validar, en el caso de que alguno tena algun error, debemos capturarlo con la función validationResult(req) que recibe como argumento la request.
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json(errors);
+	}
+
 	let { nombre, correo, password, role } = req.body;
 
 	//h2*: Proceso de creación de Schema y guardado en bbdd MongoDB.
@@ -19,6 +26,12 @@ const postUsers = async (req = request, res) => {
 	const usuario = new Usuario({ nombre, correo, password, role });
 
 	//todo: Verificar si el correo existe
+	const existeEmail = await Usuario.findOne({ correo });
+	if (existeEmail) {
+		return res.status(400).json({
+			error: "Ese correo ya esta registrado",
+		});
+	}
 
 	//todo: Encriptar contraseña
 
@@ -33,7 +46,7 @@ const postUsers = async (req = request, res) => {
 	//p*: Si el Schema devuelve un error tenemos que atajarlo con un try...catch para poder interactuar con el usuario
 	try {
 		await usuario.save();
-		res.status(201).json({ msg: "POST API", usuario });
+		res.status(201).json(usuario);
 	} catch (error) {
 		console.log(error);
 		res.status(400).json({
