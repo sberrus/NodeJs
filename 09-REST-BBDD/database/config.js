@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 //Hay que tomar en cuenta que la ruta al final de la url, es la bbdd. Si existe en mongo trabajará en ella, de lo contrario la creará.
-const _dbUrl = process.env.CNN_MONGODB;
+const _dbUrl = process.env.CNN_MONGOOSE;
 
 const dbConection = async () => {
 	try {
