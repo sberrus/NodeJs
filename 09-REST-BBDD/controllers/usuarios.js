@@ -11,10 +11,6 @@ const getUsers = (req, res = response) => {
 
 const postUsers = async (req = request, res) => {
 	//El express-validator verifica los campos que deseamos validar, en el caso de que alguno tena algun error, debemos capturarlo con la función validationResult(req) que recibe como argumento la request.
-	const errors = validationResult(req);
-	if (!errors.isEmpty()) {
-		return res.status(400).json(errors);
-	}
 
 	let { nombre, correo, password, role } = req.body;
 
