@@ -8,6 +8,7 @@ const {
 	patchUsers,
 	deleteUsers,
 } = require("../controllers/usuarios");
+const { esRoleValido, existeEmail } = require("../helpers/db-validators");
 const router = Router();
 
 router.get("/", getUsers);
@@ -22,12 +23,27 @@ router.post(
 			"El password debe tener mínimo 6 caractéres"
 		).isLength({ min: 6 }),
 		check("correo", "El correo no es valido").isEmail(),
-		check("role", "No es un rol válido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
+		check("correo").custom(existeEmail),
+		/* 		check("role", "No es un rol válido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
+		 */
+		check("role").custom(esRoleValido),
 		validarCampos,
 	],
 	postUsers
 );
-router.put("/:id", putUsers);
+router.put(
+	"/:id",
+	[
+		check("correo").custom(existeEmail),
+		check(
+			"password",
+			"El password debe tener mínimo 6 caractéres"
+		).isLength({ min: 6 }),
+		check("role").custom(esRoleValido),
+	],
+	validarCampos,
+	putUsers
+);
 router.patch("/", patchUsers);
 router.delete("/", deleteUsers);
 

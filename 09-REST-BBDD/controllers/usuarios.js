@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 //p*:Los modelos se inicializan con mayusculas para dejar más claro que es un objeto al que podemos instanciar.
 const Usuario = require("../models/usuario");
 const { validationResult } = require("express-validator");
+const { existeEmail } = require("../helpers/db-validators");
 
 const getUsers = (req, res = response) => {
 	res.status(200).json({ msg: "GET - desde controller" });
@@ -21,14 +22,6 @@ const postUsers = async (req = request, res) => {
 
 	const usuario = new Usuario({ nombre, correo, password, role });
 
-	//todo: Verificar si el correo existe
-	const existeEmail = await Usuario.findOne({ correo });
-	if (existeEmail) {
-		return res.status(400).json({
-			error: "Ese correo ya esta registrado",
-		});
-	}
-
 	//todo: Encriptar contraseña
 
 	//El salt es un valor que se usa para darle más seguridad a un encriptado. Por defecto el valor que recive es 10, mientras mayor sea este número, mayor seguridad tendrá el encriptado, pero esto también hace que la momento de desencriptar la contraseña dure más este proceso.
@@ -39,7 +32,7 @@ const postUsers = async (req = request, res) => {
 
 	//h3*: Guardado en BBDD
 	//p*: Para guardar los datos en la ddbb se usa el método save() de la instancia el cual nos permite, después de resolver el Schema, mandar los datos a la ddbb.
-	//p*: Si el Schema devuelve un error tenemos que atajarlo con un try...catch para poder interactuar con el usuario
+	//p*: Si el Schema devuelve un error tenemos que atajarlo con un try...catch para poder interactuar con el usuario.
 	try {
 		await usuario.save();
 		res.status(201).json(usuario);
@@ -51,14 +44,23 @@ const postUsers = async (req = request, res) => {
 		});
 	}
 };
-const putUsers = (req = request, res) => {
+const putUsers = async (req = request, res) => {
 	//Section query
-	const id = req.params.id;
+	const { id } = req.params;
+	const { password, google, ...resto } = req.body;
 
-	//URL Query
-	const query = req.query;
-
-	res.json({ msg: "PUT - desde controller", id: "el id es: " + id, query });
+	//Validar contra bbdd
+	if (password) {
+		//Encriptar contraseña
+		const salt = bcryptjs.genSaltSync();
+		resto.password = bcryptjs.hashSync(password, salt);
+	}
+	try {
+		const usuario = await Usuario.findByIdAndUpdate(id, resto);
+		res.json({ usuario });
+	} catch (error) {
+		res.status(400).json({ error });
+	}
 };
 const patchUsers = (req, res) => {
 	res.json({ msg: "PATCH - desde controller" });

@@ -28,7 +28,7 @@ const UsuarioSchema = Schema({
 	},
 	role: {
 		type: String,
-		required: [true,"No se ha indicado el [role] del usuario"],
+		required: [true, "No se ha indicado el [role] del usuario"],
 		//Esta propiedad define mediante un array los valores que son permitidos para este campo.
 		emun: ["ADMIN_ROLE", "USER_ROLE"],
 	},
@@ -42,6 +42,16 @@ const UsuarioSchema = Schema({
 		default: false,
 	},
 });
+
+//MODIFICACIÓN DE MÉTODOS DE MONGOOSE
+//Modificando retorno al guardar un documento en la BBDD.
+UsuarioSchema.methods.toJSON = function () {
+	//usamos una función declarativa y una una función llave porque esto nos permite tener mejor control del objeto "this".
+	//Esto nos permite utilizar nuestro modelo como si fuera un objeto literal en JS.
+	const { __v, password, ...usuario } = this.toObject();
+	//devolvemos usuario ya que este contiene todos los valores excepto (__v,password) y todos los que deseemos extraer de los datos que envia el server a la ddbb.
+	return usuario;
+};
 
 //exportamos la función model() que es la que se encarga de configurar internamente el schema para que pueda ser utilizado.
 module.exports = model(
