@@ -8,7 +8,11 @@ const {
 	patchUsers,
 	deleteUsers,
 } = require("../controllers/usuarios");
-const { esRoleValido, existeEmail } = require("../helpers/db-validators");
+const {
+	esRoleValido,
+	existeEmail,
+	existeUsuarioPorId,
+} = require("../helpers/db-validators");
 const router = Router();
 
 router.get("/", getUsers);
@@ -24,8 +28,6 @@ router.post(
 		).isLength({ min: 6 }),
 		check("correo", "El correo no es valido").isEmail(),
 		check("correo").custom(existeEmail),
-		/* 		check("role", "No es un rol válido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
-		 */
 		check("role").custom(esRoleValido),
 		validarCampos,
 	],
@@ -34,6 +36,8 @@ router.post(
 router.put(
 	"/:id",
 	[
+		check("id", "No es un ID válido").isMongoId(),
+		check("id").custom(existeUsuarioPorId),
 		check("correo").custom(existeEmail),
 		check(
 			"password",

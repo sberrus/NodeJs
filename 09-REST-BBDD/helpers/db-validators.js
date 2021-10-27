@@ -17,5 +17,13 @@ const existeEmail = async (correo = "") => {
 		);
 	}
 };
+const existeUsuarioPorId = async (id) => {
+	const existeUsuario = await Usuario.findById(id);
+	if (!existeUsuario) {
+		throw new Error(
+			`El ID: ${id}, no existe en la BBDD. Introduzca uno correcto`
+		);
+	}
+};
 
-module.exports = { esRoleValido, existeEmail };
+module.exports = { esRoleValido, existeEmail, existeUsuarioPorId };

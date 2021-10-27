@@ -6,8 +6,16 @@ const Usuario = require("../models/usuario");
 const { validationResult } = require("express-validator");
 const { existeEmail } = require("../helpers/db-validators");
 
-const getUsers = (req, res = response) => {
-	res.status(200).json({ msg: "GET - desde controller" });
+const getUsers = async (req = request, res = response) => {
+	const { limit = 8, offset = 0 } = req.query;
+	//el método .find() devuelve todos los documentos del Schema.
+	const usuarios = await Usuario.find()
+		//Método para limitar la cantidad de documentos que devuelve la BD.
+		.limit(parseInt(limit))
+		.skip(parseInt(offset));
+	//
+
+	res.status(200).json({ usuarios });
 };
 
 const postUsers = async (req = request, res) => {
@@ -47,7 +55,9 @@ const postUsers = async (req = request, res) => {
 const putUsers = async (req = request, res) => {
 	//Section query
 	const { id } = req.params;
-	const { password, google, ...resto } = req.body;
+	//p*: Al destructurar estamos separando las propiedades que no vamos a utilizar o que vamos a modificar de alguna forma y el resto de propiedades las tendremos en el rest operator ...resto. Este Resto es el que se envia a Mongoose para poder actualiazar los paths que hay dentro de este.
+	//p*: En el siguiente ejemplo vemos que sacamos _id que es donde aparece el objectID de Mongo. Esto lo hacemos para que en el caso de que nos envien desde el front una propiedad "_id: ñjkfasdk" este lo capture y no llegue a la modificación de la BBDD.
+	const { _id, password, google, ...resto } = req.body;
 
 	//Validar contra bbdd
 	if (password) {
