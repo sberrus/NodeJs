@@ -7,15 +7,25 @@ const { validationResult } = require("express-validator");
 const { existeEmail } = require("../helpers/db-validators");
 
 const getUsers = async (req = request, res = response) => {
+	//querys
+	const query = { estado: true };
 	const { limit = 8, offset = 0 } = req.query;
+	/* 
 	//el método .find() devuelve todos los documentos del Schema.
-	const usuarios = await Usuario.find()
+	const usuarios = await Usuario.find(query)
 		//Método para limitar la cantidad de documentos que devuelve la BD.
 		.limit(parseInt(limit))
 		.skip(parseInt(offset));
-	//
+	//conocer total de documentos de la colección.
+	const total = await Usuario.countDocuments(query);
+ */
+	//p* El método .all del objeto Promise, nos permite disparar un arreglo de promesas de manera simultanea. A diferencia de los async/await que cargan de manera secuencial, Promise.all carga todo las promesas a la vaz en hilos paralelos permitiendo que el tiempo de carga de las mismas se optimice. Si una de las promesas da error todas lo haran.
+	const [total, usuarios] = await Promise.all([
+		Usuario.countDocuments(query),
+		await Usuario.find(query).limit(parseInt(limit)).skip(parseInt(offset)),
+	]);
 
-	res.status(200).json({ usuarios });
+	res.status(200).json({ total, usuarios });
 };
 
 const postUsers = async (req = request, res) => {
