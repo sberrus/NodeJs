@@ -48,8 +48,9 @@ const UsuarioSchema = Schema({
 UsuarioSchema.methods.toJSON = function () {
 	//usamos una función declarativa y una una función llave porque esto nos permite tener mejor control del objeto "this".
 	//Esto nos permite utilizar nuestro modelo como si fuera un objeto literal en JS.
-	const { __v, password, ...usuario } = this.toObject();
+	const { __v, password, _id, ...usuario } = this.toObject();
 	//devolvemos usuario ya que este contiene todos los valores excepto (__v,password) y todos los que deseemos extraer de los datos que envia el server a la ddbb.
+	usuario.uid = _id;
 	return usuario;
 };
 

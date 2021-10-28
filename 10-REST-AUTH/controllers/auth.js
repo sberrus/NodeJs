@@ -1,14 +1,16 @@
 //Imports
 const { response } = require("express");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 //Schemas
 const Usuario = require("../models/usuario");
+const { generarJWT } = require("../helpers/jwt-generator");
 
 const login = async (req = request, res = response) => {
 	const { correo, password } = req.body;
 
 	try {
-		//VALIDACIONES:
+		//Vaidaciones
 		//existe correo
 		const usuario = await Usuario.findOne({ correo });
 		if (!usuario) {
@@ -30,10 +32,11 @@ const login = async (req = request, res = response) => {
 				.json({ msg: "Error al iniciar sesión - Password" });
 		}
 		//generar JWT
+		const token = await generarJWT(usuario.id);
 
 		res.json({
-			correo,
-			password,
+			usuario,
+			token,
 		});
 	} catch (error) {
 		console.log(error);
