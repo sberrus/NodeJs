@@ -89,6 +89,9 @@ const deleteUsers = async (req = request, res) => {
 	//params
 	const { id } = req.params;
 
+	//extrayendo uid desde la funcion verificarJWT()
+	const { uid } = req;
+
 	//ddbb
 	try {
 		//Eliminar documento de una collección:
@@ -100,7 +103,7 @@ const deleteUsers = async (req = request, res) => {
 		const usuario = await Usuario.findByIdAndUpdate(id, {
 			estado: false,
 		});
-		res.status(200).json({ id, usuario });
+		res.status(200).json({ usuario, uid });
 	} catch (error) {
 		console.log(error);
 	}

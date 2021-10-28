@@ -12,7 +12,7 @@ const generarJWT = (uid = "") => {
 			process.env.TOKEN_PRIVATE_KEY,
 			//options: Las options es un objeto que nos permite darle ciertas configuraciones al token como puede ser la expiración del mismo.
 			{
-				expiresIn: "4h",
+				expiresIn: "10h",
 			},
 			//callback
 			(err, token) => {
