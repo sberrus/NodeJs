@@ -27,7 +27,9 @@ router.post(
 			"El password debe tener mínimo 6 caractéres"
 		).isLength({ min: 6 }),
 		check("correo", "El correo no es valido").isEmail(),
-		check("correo").custom(existeEmail),
+		//El método .bail() es útil porque especifica en esa validación, que si dispara algún error no siga realizando validaciones.
+		//Este método es útil para evitar que si en este punto hay algun error, no dispare el resto de validaciones y por ende no haga consultas innecesarias a la BBDD.
+		check("correo").custom(existeEmail).bail(),
 		check("role").custom(esRoleValido),
 		validarCampos,
 	],
@@ -44,11 +46,19 @@ router.put(
 			"El password debe tener mínimo 6 caractéres"
 		).isLength({ min: 6 }),
 		check("role").custom(esRoleValido),
+		validarCampos,
 	],
-	validarCampos,
 	putUsers
 );
 router.patch("/", patchUsers);
-router.delete("/", deleteUsers);
+router.delete(
+	"/:id",
+	[
+		check("id", "No es un ID válido").isMongoId(),
+		check("id").custom(existeUsuarioPorId),
+		validarCampos,
+	],
+	deleteUsers
+);
 
 module.exports = router;

@@ -85,8 +85,25 @@ const putUsers = async (req = request, res) => {
 const patchUsers = (req, res) => {
 	res.json({ msg: "PATCH - desde controller" });
 };
-const deleteUsers = (req, res) => {
-	res.json({ msg: "DELETE - desde controller" });
+const deleteUsers = async (req = request, res) => {
+	//params
+	const { id } = req.params;
+
+	//ddbb
+	try {
+		//Eliminar documento de una collección:
+		//p*: No se recomienda eliminar directamente al usuario por completo porque esto hace que perdamos la concurrencia con los datos. La mejor práctica es utilizar la propiedad "estado" del documento. Esto para poder utilizar los filtros de Mongo y es mejor para evitar problemas de concurrencia.
+		/* const usuario = await Usuario.findByIdAndDelete(id); */
+
+		//Eliminar usuario sin eliminar el documento. Modificar la propiedad estado:
+		//p*: De esta forma estamos mediante el estado, dando de baja a un usuario pero sin perder los datos del mismo. Esto le permitiría al usuario en cuestión poder recuperar su información en cualquier momento o si tiene alguna interacción con otros usuarios, no perder el contenido de los mismos.
+		const usuario = await Usuario.findByIdAndUpdate(id, {
+			estado: false,
+		});
+		res.status(200).json({ id, usuario });
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 module.exports = {

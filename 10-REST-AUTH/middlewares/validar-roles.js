@@ -7,7 +7,7 @@ const Role = require("../models/role");
  * @param  {...any} roles Array de strings con los roles permitidos
  * @returns
  */
-const isValidRole = (...roles) => {
+const validarRoles = (...roles) => {
 	return async (req, res, next) => {
 		const { uid } = req; //verified uid of request
 
@@ -21,4 +21,4 @@ const isValidRole = (...roles) => {
 	};
 };
 
-module.exports = { isValidRole };
+module.exports = { validarRoles };
