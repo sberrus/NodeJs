@@ -14,6 +14,7 @@ const {
 	existeUsuarioPorId,
 } = require("../helpers/db-validators");
 const { validarJWT } = require("../middlewares/validar-jwt");
+const { isValidRole } = require("../middlewares/validar-roles");
 const router = Router();
 
 router.get("/", getUsers);
@@ -54,6 +55,7 @@ router.delete(
 	"/:id",
 	[
 		validarJWT,
+		isValidRole("ADMIN_ROLE", "YOLO_ROLE"),
 		check("id", "No es un ID válido").isMongoId(),
 		check("id").custom(existeUsuarioPorId),
 		validarCampos,

@@ -3,8 +3,6 @@ const bcryptjs = require("bcryptjs");
 
 //p*:Los modelos se inicializan con mayusculas para dejar más claro que es un objeto al que podemos instanciar.
 const Usuario = require("../models/usuario");
-const { validationResult } = require("express-validator");
-const { existeEmail } = require("../helpers/db-validators");
 
 const getUsers = async (req = request, res = response) => {
 	//querys
