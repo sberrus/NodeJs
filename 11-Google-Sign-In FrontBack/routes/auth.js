@@ -1,4 +1,4 @@
-const { Router, request, response } = require("express");
+const { Router } = require("express");
 const { check } = require("express-validator");
 const { login } = require("../controllers/auth");
 const { validarCampos } = require("../middlewares/validar-campos");
@@ -9,7 +9,9 @@ router.post(
 	"/",
 	[
 		check("correo").notEmpty().withMessage("El correo es obligatorio"),
-		check("password").notEmpty().withMessage("La contraseña es obligatoria"),
+		check("password")
+			.notEmpty()
+			.withMessage("La contraseña es obligatoria"),
 		validarCampos,
 	],
 	login
