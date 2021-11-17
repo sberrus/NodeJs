@@ -9,3 +9,5 @@
 -   Despliegues a Heroku
 -   Uso del Google SignIn en el Front-End
 -   Crear usuarios personalizados en base a respuestas de Google
+
+## En el video 154 del curso de NodeJs de Fernando Herrera aparece la guia de configuración de google cloud para acceder a las características de autenticación de Google Identity
