@@ -11,7 +11,6 @@ const dbConection = async () => {
 		});
 		console.log("BBDD Conectada");
 	} catch (error) {
-		console.log(error);
 		throw new Error("Error al conectar con la bbdd");
 	}
 };

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 //Schemas
 const Usuario = require("../models/usuario");
 const { generarJWT } = require("../helpers/jwt-generator");
+const { googleVerify } = require("../helpers/google-verify");
 
 const login = async (req = request, res = response) => {
 	const { correo, password } = req.body;
@@ -46,4 +47,22 @@ const login = async (req = request, res = response) => {
 	}
 };
 
-module.exports = { login };
+const googleSignIn = async (req, res = response) => {
+	const { id_token } = req.body;
+
+	try {
+		const { nombre, img, correo } = await googleVerify(id_token);
+
+		res.json({
+			msg: "Todo Okey!",
+			id_token,
+		});
+	} catch (error) {
+		res.status(400).json({
+			ok: false,
+			msg: "Token no se ha verificado correctamente",
+		});
+	}
+};
+
+module.exports = { login, googleSignIn };
