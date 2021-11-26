@@ -36,8 +36,11 @@
 			data-text="$ {button.text}"
 			data-size="large"
 			data-locale="es"
-			data-logo_alignment="center"
+			data-logo_alignment="left"
 		></div>
+
+		<button id="signout">Signout</button>
+
 		<script>
 			//Función que se ejecuta al finalizar el proceso de logeo de google, callback que devuelve una response con las credenciales del usuario logeado.
 			async function handleCredentialResponse(response) {
@@ -47,11 +50,34 @@
 					url: "/api/auth/google",
 					data: body,
 				})
-					.then((res) => console.log(res.data))
+					.then((res) => {
+						console.log(res.data);
+						//Almacenamos el correo del usuario logeado y lo almacenamos en localstorage para poder utilizarlo luego para realizar el logout
+						localStorage.setItem("correo", res.data.usuario.correo);
+						location.reload();
+					})
 					.catch((err) => console.log(err.response.data));
 				//Google Token A.K.A = ID_TOKEN
 				// console.log("id_token:", response.credential);
 			}
+
+			//Llamamos al boton para asignarle el evento click
+			const signoutButton = document.querySelector("#signout");
+			signoutButton.addEventListener("click", () => {
+				console.log(google.accounts.id); //Esta propiedad nos permite acceder a los métodos para realizar correctamente el logout
+				//??
+				google.accounts.id.disableAutoSelect();
+				//Método para realizar el logout. Enviamos como primer parámetro el correo del usuario que deseamos deslogear.
+				google.accounts.id.revoke(
+					localStorage.getItem("correo"),
+					//Como segundo parametro enviamos un callback que se ejecutará al momento de haberse completado el deslogueo correctamente.
+					(done) => {
+						//limpiamos localstorage y recargamos la página.
+						localStorage.clear();
+						location.reload();
+					}
+				);
+			});
 		</script>
 	</body>
 </html>
