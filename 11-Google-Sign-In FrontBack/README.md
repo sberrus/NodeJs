@@ -15,3 +15,7 @@
 ## npm install google-auth-library --save
 
 -   Esta libreria es necesaria para poder leer los datos de acceso de google en neustro backend
+
+## Pro Tip:
+
+-   En Postman podemos crear documentación de forma más sencilla para poder compartir todos los endpoints y nos ahorra muchísimo la tarea de crear las documentaciones que necesita el frontend para poder interactuar con nuestro backend

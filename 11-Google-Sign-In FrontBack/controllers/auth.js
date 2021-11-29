@@ -54,6 +54,8 @@ const googleSignIn = async (req, res = response) => {
 		//enviamos el token que nos devuelve el cliente al haberse loggeado con el boton de google y extraemos la información de dicho token con los métodos de autenticación en el backend de google.
 		const { nombre, img, correo } = await googleVerify(id_token);
 
+
+
 		//Comprobando si el correo ya esta registrado en la bbdd.
 		let usuario = await Usuario.findOne({ correo });
 
@@ -68,7 +70,7 @@ const googleSignIn = async (req, res = response) => {
 				img,
 				//propiedad para lógica de autenticación
 				google: true,
-				role: "USER_ROLE"
+				role: "USER_ROLE",
 			};
 			usuario = new Usuario(data);
 			await usuario.save();
@@ -94,6 +96,8 @@ const googleSignIn = async (req, res = response) => {
 		res.status(400).json({
 			ok: false,
 			msg: "Token no se ha verificado correctamente",
+			error,
+			id_token,
 		});
 	}
 };

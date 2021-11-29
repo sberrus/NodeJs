@@ -45,6 +45,7 @@
 			//Función que se ejecuta al finalizar el proceso de logeo de google, callback que devuelve una response con las credenciales del usuario logeado.
 			async function handleCredentialResponse(response) {
 				const body = { id_token: response.credential };
+				console.log(body);
 				await axios({
 					method: "POST",
 					url: "/api/auth/google",
@@ -56,7 +57,10 @@
 						localStorage.setItem("correo", res.data.usuario.correo);
 						location.reload();
 					})
-					.catch((err) => console.log(err.response.data));
+					.catch((err) => {
+						console.log(err);
+						console.log(err?.response?.data);
+					});
 				//Google Token A.K.A = ID_TOKEN
 				// console.log("id_token:", response.credential);
 			}
