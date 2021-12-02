@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
+const { crearCategoria } = require("../controllers/categories");
 
-const { validarCampos } = require("../middlewares/validar-campos");
+const { validarJWT, validarCampos } = require("../middlewares");
 
 const router = Router();
 
@@ -12,10 +13,15 @@ router.get("/", (req, res) => {
 });
 
 //Crear Categoría - private - global
-router.post("/", (req, res) => {
-	console.log("Nueva categoría");
-	res.send("todo ok");
-});
+router.post(
+	"/",
+	[
+		check("nombre", "El nombre es obligatorio").notEmpty(),
+		validarJWT,
+		validarCampos,
+	],
+	crearCategoria
+);
 
 //Obtener categoria por id - public
 router.get("/:id", (req, res) => {
