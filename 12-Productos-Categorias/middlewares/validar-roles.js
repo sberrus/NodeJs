@@ -1,6 +1,5 @@
 //Schemas
 const Usuario = require("../models/usuario");
-const Role = require("../models/role");
 
 /**
  *

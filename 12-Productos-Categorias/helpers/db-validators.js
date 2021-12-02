@@ -1,5 +1,6 @@
 const Role = require("../models/role");
 const Usuario = require("../models/usuario");
+const Categoria = require("../models/categoria");
 
 const esRoleValido = async (role = "") => {
 	const existeRole = await Role.findOne({ role });
@@ -26,4 +27,20 @@ const existeUsuarioPorId = async (id) => {
 	}
 };
 
-module.exports = { esRoleValido, existeEmail, existeUsuarioPorId };
+/**
+ * Comprueba si la categoria existe en la DDBB
+ * @param {*} id ID de mongoose de la categoria
+ */
+const existeCategoria = async (id) => {
+	const categoria = await Categoria.findById(id);
+	if (!categoria) {
+		throw new Error(`La categoria no existe en la BBDD`);
+	}
+};
+
+module.exports = {
+	esRoleValido,
+	existeEmail,
+	existeUsuarioPorId,
+	existeCategoria,
+};
