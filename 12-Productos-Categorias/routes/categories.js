@@ -5,13 +5,11 @@ const {
 	obtenerCategoria,
 	obtenerCategorias,
 	actualizarCategoria,
+	eliminarCategoria,
 } = require("../controllers/categories");
-const {
-	existeCategoria,
-	categoriasIguales,
-} = require("../helpers/db-validators");
+const { existeCategoria } = require("../helpers/db-validators");
 
-const { validarJWT, validarCampos } = require("../middlewares");
+const { validarJWT, validarCampos, esAdmin } = require("../middlewares");
 
 const router = Router();
 
@@ -64,9 +62,20 @@ router.put(
 );
 
 //Eliminar categoria - admin only
-router.delete("/:id", (req, res) => {
-	console.log("Nueva categoría");
-	res.send("todo ok");
-});
+router.delete(
+	"/:id",
+	[
+		check("id")
+			.notEmpty()
+			.isMongoId()
+			.withMessage("El ID no es válido")
+			.bail()
+			.custom(existeCategoria),
+		validarCampos,
+		validarJWT,
+		esAdmin,
+	],
+	eliminarCategoria
+);
 
 module.exports = router;

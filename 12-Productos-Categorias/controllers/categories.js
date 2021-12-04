@@ -1,5 +1,5 @@
 const { request, response } = require("express");
-const { Categoria } = require("../models");
+const { Categoria, Usuario } = require("../models");
 
 //todo: Crear los controladores de cada una de las acciones que deseamos hacer con las categorias. Cada una de las acciones tiene sus propias reglas
 
@@ -74,10 +74,24 @@ const actualizarCategoria = async (req, res) => {
 };
 
 //Borrar categoria (cambiando estado solamente)
+const eliminarCategoria = async (req, res) => {
+	//MongoID
+	const { id } = req.params;
+
+	//Cambiar status de la bbdd del documento
+	data = {
+		estado: false,
+	};
+
+	const categoria = await Categoria.findByIdAndUpdate(id, data);
+
+	res.json({ ok: true });
+};
 
 module.exports = {
 	crearCategoria,
 	obtenerCategoria,
 	obtenerCategorias,
 	actualizarCategoria,
+	eliminarCategoria,
 };

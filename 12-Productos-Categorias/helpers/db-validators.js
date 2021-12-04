@@ -1,3 +1,5 @@
+//Validadores para usar en las funciones custom de la libreria express-validator en su cadena de validaciones
+
 const Role = require("../models/role");
 const Usuario = require("../models/usuario");
 const Categoria = require("../models/categoria");
