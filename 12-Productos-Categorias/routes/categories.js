@@ -55,6 +55,9 @@ router.put(
 			.withMessage("El ID no es un ID de mongo válido")
 			.bail()
 			.custom(existeCategoria),
+		check("nombre")
+			.notEmpty()
+			.withMessage("El nombre no puede estar vacío"),
 		validarJWT,
 		validarCampos,
 	],

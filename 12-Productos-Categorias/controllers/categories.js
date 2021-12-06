@@ -9,7 +9,7 @@ const obtenerCategorias = async (req = request, res) => {
 
 	//Consulta
 	const [total, categorias] = await Promise.all([
-		Categoria.countDocuments(),
+		Categoria.countDocuments().where({ estado: true }),
 		await Categoria.find({ estado: true })
 			.limit(parseInt(limit))
 			.skip(parseInt(offset)),
@@ -25,8 +25,15 @@ const obtenerCategoria = async (req = request, res) => {
 	const { id } = req.params;
 
 	//categoria
-	const categoria = await Categoria.findById(id).populate("usuario");
-	//Populate nos permite llenar la propiedad del documento que nos devuelve el modelo. Cuando llamamos a populate("key") enviamos como argumento la llave que tiene referenciado otro documento. En este caso la llave "usuario" tiene referenciado un documento del schema usuarios, pero en el documento de categorias solo aparece el id del documento. Con la función populate llamamos a la información del usuario referenciado y la anexamos a la consulta.
+	const categoria = await Categoria.findById(id).populate("usuario", [
+		//Ejemplo para llamar multiples elementos del populate.
+		"nombre",
+		"role",
+	]);
+
+	//Populate nos permite llamar a la información que contiene el documento referenciado dentro del schema al que se aplica. Por lo tanto en el Schema de Categorias tenemos una llave que se llama usuario que contiene el id de un documento del Schema Usuario. Al momento de almacenar los datos Mongo guarda el id del documento usuario.
+	//Populate nos permite llamar a dicha información y al momento de devolver el documento devuelve toda la información referente al documento referenciado.
+	//p* Si enviamos un solo argumento, llamamos a todo la información del documento pero en el segundo argumento podemos pasar una sola propiedad que nos permite acceder solo a la información que deseemos. En este ejemplo solo llamaremos a la propiedad nombre del documento Usuario referenciado al Schema de Categoria. Tambien podemos enviarle un arreglo en strings con todos los elementos que deseamos que nos devuelva la consulta.
 	//respuesta
 	res.json(categoria);
 };
@@ -64,11 +71,16 @@ const actualizarCategoria = async (req, res) => {
 	//param
 	const { id } = req.params;
 	//body
-	const { nombre, ...resto } = req.body;
+	const { nombre = "", ...resto } = req.body;
 
-	const categoria = await Categoria.findByIdAndUpdate(id, {
-		nombre: nombre.toUpperCase(),
-	});
+	const categoria = await Categoria.findByIdAndUpdate(
+		id,
+		{
+			nombre: nombre.toUpperCase(),
+		},
+		//La configuración "new" nos permite observar el documento ya actualizado en la consulta.
+		{ new: true }
+	);
 
 	res.json(categoria);
 };
