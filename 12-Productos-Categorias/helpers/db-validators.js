@@ -1,8 +1,5 @@
 //Validadores para usar en las funciones custom de la libreria express-validator en su cadena de validaciones
-
-const Role = require("../models/role");
-const Usuario = require("../models/usuario");
-const Categoria = require("../models/categoria");
+const { Role, Usuario, Categoria, Product } = require("../models");
 
 const esRoleValido = async (role = "") => {
 	const existeRole = await Role.findOne({ role });
@@ -40,9 +37,21 @@ const existeCategoria = async (id) => {
 	}
 };
 
+/**
+ * Comprueba si el nombre ya existe en la BBDD
+ * @param {*} nombre String
+ */
+const existeNombre = async (nombre = "") => {
+	const productos = await Product.findOne({ nombre });
+	if (productos) {
+		throw new Error(`El producto ${nombre} ya existe en la bbdd`);
+	}
+};
+
 module.exports = {
 	esRoleValido,
 	existeEmail,
 	existeUsuarioPorId,
 	existeCategoria,
+	existeNombre,
 };

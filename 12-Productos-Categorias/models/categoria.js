@@ -8,7 +8,6 @@ const CategoriaSchema = Schema({
 	},
 	estado: {
 		type: Boolean,
-		required: true,
 		default: true,
 	},
 	//El siguiente campo es un campo que dentro tendra un schema de usuario pero para no hacer el Schema entero, hacemos una referencia a otro Schema ya existente, en este caso "Usuario"

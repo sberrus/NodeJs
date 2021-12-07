@@ -13,7 +13,6 @@ const validarJWT = (req = request, res, next) => {
 		req.uid = uid;
 		next();
 	} catch (error) {
-		console.log(error);
 		res.status(401).json({ msg: "token no válido" });
 	}
 };
