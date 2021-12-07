@@ -50,4 +50,14 @@ const verTodosLosProductos = async (req, res) => {
 	res.json({ total, productos });
 };
 
-module.exports = { crearProductos, verTodosLosProductos };
+const verProductoPorID = async (req, res) => {
+	//Document id
+	const { id } = req.params;
+	const producto = await Product.findById(id)
+		.populate("usuario", "nombre")
+		.populate("categoria", "nombre");
+
+	res.json({ producto });
+};
+
+module.exports = { crearProductos, verTodosLosProductos, verProductoPorID };

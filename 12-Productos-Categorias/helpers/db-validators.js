@@ -48,10 +48,20 @@ const existeNombre = async (nombre = "") => {
 	}
 };
 
+/**
+ * Verifica si el producto existe en la BBDD antes de proseguir con el resto de validaciones
+ * @param {*} id  Document`s MongoID
+ */
+const existeProducto = async (id = "") => {
+	const producto = await Product.findById(id);
+	if (!producto) throw new Error("El producto no existe en la bbdd");
+};
+
 module.exports = {
 	esRoleValido,
 	existeEmail,
 	existeUsuarioPorId,
 	existeCategoria,
 	existeNombre,
+	existeProducto,
 };

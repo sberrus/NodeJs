@@ -6,10 +6,11 @@ const { check } = require("express-validator");
 const {
 	crearProductos,
 	verTodosLosProductos,
+	verProductoPorID,
 } = require("../controllers/product");
 
 //Helpers
-const { existeNombre } = require("../helpers/db-validators");
+const { existeNombre, existeProducto } = require("../helpers/db-validators");
 
 //Middlewares
 const { validarCampos, validarJWT, esAdmin } = require("../middlewares");
@@ -33,9 +34,14 @@ router.post(
 );
 
 //Ver productos - Público
-router.get("/", [], verTodosLosProductos);
+router.get("/", verTodosLosProductos);
 
 //Ver producto por ID - Público
+router.get(
+	"/:id",
+	[check("id").notEmpty().isMongoId().custom(existeProducto), validarCampos],
+	verProductoPorID
+);
 
 //Actualizar producto - privado
 
