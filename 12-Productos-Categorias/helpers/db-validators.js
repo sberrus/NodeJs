@@ -42,7 +42,7 @@ const existeCategoria = async (id) => {
  * @param {*} nombre String
  */
 const existeNombre = async (nombre = "") => {
-	const productos = await Product.findOne({ nombre });
+	const productos = await Product.findOne({ nombre: nombre.toUpperCase() });
 	if (productos) {
 		throw new Error(`El producto ${nombre} ya existe en la bbdd`);
 	}

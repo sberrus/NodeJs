@@ -26,7 +26,7 @@ const crearProductos = async (req = request, res = response) => {
 
 		//Guardar producto
 		const product = new Product({
-			nombre,
+			nombre: nombre.toUpperCase(),
 			usuario: userID,
 			precio,
 			categoria: cat._id,
@@ -79,7 +79,13 @@ const actualizarProductos = async (req, res) => {
 
 		const product = await Product.findByIdAndUpdate(
 			id,
-			{ nombre, precio, descripcion, disponible, categoria: cat._id },
+			{
+				nombre: nombre.toUpperCase(),
+				precio,
+				descripcion,
+				disponible,
+				categoria: cat._id,
+			},
 			{ new: true }
 		);
 
