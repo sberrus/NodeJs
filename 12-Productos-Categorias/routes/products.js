@@ -8,6 +8,7 @@ const {
 	verTodosLosProductos,
 	verProductoPorID,
 	actualizarProductos,
+	eliminarProducto,
 } = require("../controllers/product");
 
 //Helpers
@@ -66,5 +67,15 @@ router.put(
 );
 
 //Eliminar producto - privado - admin
+router.delete(
+	"/:id",
+	[
+		validarJWT,
+		esAdmin,
+		check("id").notEmpty().isMongoId().custom(existeProducto),
+		validarCampos,
+	],
+	eliminarProducto
+);
 
 module.exports = router;

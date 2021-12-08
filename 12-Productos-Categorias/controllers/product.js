@@ -61,14 +61,25 @@ const verProductoPorID = async (req, res) => {
 };
 
 const actualizarProductos = async (req, res) => {
+	const userID = req.uid; //User ID
 	const { id } = req.params; //product id
 
-	const { nombre, precio, descripcion, disponible } = req.body; //body data
+	const { nombre, precio, descripcion, disponible, categoria } = req.body; //body data
 
 	try {
+		let cat = await Categoria.findOne({ nombre: categoria.toUpperCase() });
+
+		if (!cat) {
+			const nuevaCategoria = new Categoria({
+				nombre: categoria.toUpperCase(),
+				usuario: userID,
+			});
+			cat = await nuevaCategoria.save();
+		}
+
 		const product = await Product.findByIdAndUpdate(
 			id,
-			{ nombre, precio, descripcion, disponible },
+			{ nombre, precio, descripcion, disponible, categoria: cat._id },
 			{ new: true }
 		);
 
@@ -79,9 +90,21 @@ const actualizarProductos = async (req, res) => {
 	}
 };
 
+const eliminarProducto = async (req, res) => {
+	const { id } = req.params; //Product ID
+
+	const producto = await Product.findByIdAndUpdate(
+		id,
+		{ disponible: false },
+		{ new: true }
+	);
+	res.json({ producto });
+};
+
 module.exports = {
 	crearProductos,
 	verTodosLosProductos,
 	verProductoPorID,
 	actualizarProductos,
+	eliminarProducto,
 };
