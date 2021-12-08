@@ -18,6 +18,7 @@ class Server {
 			auth: "/api/auth",
 			categories: "/api/categories",
 			products: "/api/products",
+			busquedas: "/api/busquedas",
 		};
 
 		//DB Conection
@@ -51,6 +52,7 @@ class Server {
 		this.app.use(this.paths.users, require("../routes/user"));
 		this.app.use(this.paths.categories, require("../routes/categories"));
 		this.app.use(this.paths.products, require("../routes/products"));
+		this.app.use(this.paths.busquedas, require("../routes/busquedas"));
 	}
 	listen() {
 		this.app.listen(this.port, () => {
