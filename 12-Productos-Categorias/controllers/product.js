@@ -60,4 +60,28 @@ const verProductoPorID = async (req, res) => {
 	res.json({ producto });
 };
 
-module.exports = { crearProductos, verTodosLosProductos, verProductoPorID };
+const actualizarProductos = async (req, res) => {
+	const { id } = req.params; //product id
+
+	const { nombre, precio, descripcion, disponible } = req.body; //body data
+
+	try {
+		const product = await Product.findByIdAndUpdate(
+			id,
+			{ nombre, precio, descripcion, disponible },
+			{ new: true }
+		);
+
+		res.json({ product });
+	} catch (error) {
+		console.log(error);
+		res.status(400).json({ ok: false });
+	}
+};
+
+module.exports = {
+	crearProductos,
+	verTodosLosProductos,
+	verProductoPorID,
+	actualizarProductos,
+};

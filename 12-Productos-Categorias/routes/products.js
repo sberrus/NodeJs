@@ -7,6 +7,7 @@ const {
 	crearProductos,
 	verTodosLosProductos,
 	verProductoPorID,
+	actualizarProductos,
 } = require("../controllers/product");
 
 //Helpers
@@ -44,6 +45,25 @@ router.get(
 );
 
 //Actualizar producto - privado
+router.put(
+	"/:id",
+	[
+		validarJWT,
+		check("id").notEmpty().isMongoId().custom(existeProducto),
+		check("nombre").optional(),
+		check("precio")
+			.optional()
+			.isNumeric()
+			.withMessage("El campo 'precio' debe ser un número"),
+		check("descripcion").optional(),
+		check("disponible")
+			.optional()
+			.isBoolean()
+			.withMessage("El campo 'disponible' debe ser booleano"),
+		validarCampos,
+	],
+	actualizarProductos
+);
 
 //Eliminar producto - privado - admin
 
