@@ -1,6 +1,6 @@
 const { request, response } = require("express");
 const { isValidObjectId } = require("mongoose");
-const { Usuario, Categoria } = require("../models");
+const { Usuario, Categoria, Product, Role } = require("../models");
 
 //Listas de colecciones permitidas para las busquedas
 const coleccionesPermitidas = ["categorias", "usuarios", "productos", "roles"];
@@ -43,7 +43,7 @@ const buscarUsuarios = async (termino = "", res = response) => {
  * @param {*} termino nombre de usuario || MongoID
  * @param {*} res response object from express
  */
-const buscarCategoria = async (termino = "", res = response) => {
+const buscarCategorias = async (termino = "", res = response) => {
 	//BUSCAR POR MONGOID
 	const esMongoID = isValidObjectId(termino);
 	if (esMongoID) {
@@ -62,6 +62,58 @@ const buscarCategoria = async (termino = "", res = response) => {
 
 	res.json({ results: categorias ? [categorias] : [] });
 };
+
+/**
+ * Buscar productos mediante Mongoid, nombre de producto o descripcion
+ * @param {*} termino MongoID || nombre || descripcion
+ * @param {*} res response object from express
+ * @returns
+ */
+const buscarProductos = async (termino = "", res = response) => {
+	//VALIDAR POR MONGOID
+	const esMongoID = isValidObjectId(termino);
+	if (esMongoID) {
+		const producto = await Product.findById(termino);
+		return res.json({
+			results: producto ? [producto] : [],
+		});
+	}
+
+	//BUSCAR POR NOMBRE || DESCRIPCION
+	const regex = RegExp(termino, "i"); //regex del termino
+
+	const productos = await Product.find({
+		$or: [{ nombre: regex }, { descripcion: regex }],
+		$and: [{ disponible: true }],
+	});
+
+	res.json({ results: productos ? [productos] : [] });
+};
+
+/**
+ * Buscar roles mediante Mongoid o nombre del rol
+ * @param {*} termino MongoID || nombre
+ * @param {*} res response object from express
+ * @returns
+ */
+const buscarRoles = async (termino = "", res = response) => {
+	//VALIDAR POR MONGOID
+	const esMongoID = isValidObjectId(termino);
+	if (esMongoID) {
+		const roles = await Role.findById(termino);
+		return res.json({
+			results: roles ? [roles] : [],
+		});
+	}
+
+	//BUSCAR POR NOMBRE
+	const regex = RegExp(termino, "i"); //regex del termino
+
+	const roles = await Role.find({ nombre: regex });
+
+	res.json({ results: roles ? [roles] : [] });
+};
+
 /**
  * busca en la bbdd elementos que coincidan en la busqueda pudiendo enviarles mediante query*
  * params la coleccion y el termino.
@@ -78,12 +130,13 @@ const buscar = (req = request, res) => {
 
 	switch (coleccion) {
 		case "categorias":
-			buscarCategoria(termino, res);
-			break;
+			return buscarCategorias(termino, res);
 		case "usuarios":
 			return buscarUsuarios(termino, res);
 		case "productos":
-			break;
+			return buscarProductos(termino, res);
+		case "roles":
+			return buscarRoles(termino, res);
 		default:
 			res.status(500).json({ msg: "Busqueda no permitida actualmente" });
 	}
