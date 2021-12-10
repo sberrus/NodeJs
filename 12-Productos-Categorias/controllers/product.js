@@ -45,7 +45,9 @@ const crearProductos = async (req = request, res = response) => {
 const verTodosLosProductos = async (req, res) => {
 	const [total, productos] = await Promise.all([
 		Product.countDocuments().where({ disponible: true }),
-		Product.find().where({ disponible: true }),
+		Product.find()
+			.where({ disponible: true })
+			.populate("categoria", "nombre"),
 	]);
 	res.json({ total, productos });
 };
