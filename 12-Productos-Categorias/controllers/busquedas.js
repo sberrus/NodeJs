@@ -112,7 +112,7 @@ const buscarRoles = async (termino = "", res = response) => {
 	//BUSCAR POR NOMBRE
 	const regex = RegExp(termino, "i"); //regex del termino
 
-	const roles = await Role.find({ nombre: regex });
+	const roles = await Role.find({ role: regex });
 
 	res.json({ results: roles ? [roles] : [] });
 };
